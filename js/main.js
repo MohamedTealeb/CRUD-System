@@ -7,6 +7,9 @@ var productcontainer=[]
 if(localStorage.getItem('products')!=null){
     productcontainer= JSON.parse( localStorage.getItem('products'))
 }
+// console.log("yoo");
+
+
 function addproduct(){
    
     var productobj={
@@ -58,7 +61,7 @@ var search_5=document.getElementById('searchInput').value
 var box2=``
 for(var i=0;i<productcontainer.length;i++){
     if(productcontainer[i].productNameInput.includes(search_5)){
-        console.log("yes",i);
+        // console.log("yes",i);
         box2+=`
         <tr>
 <td>${i+1}</td>
