@@ -1,3 +1,7 @@
 #productDescription{
     resize: none;
 }
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+}
