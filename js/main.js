@@ -4,6 +4,8 @@ var producPriceInput = document.getElementById('productPrice');
 var productDescriptioneInput = document.getElementById('productDescription');
 
 var productcontainer = [];
+var currentIndex = null; 
+
 if (localStorage.getItem('products') != null) {
     productcontainer = JSON.parse(localStorage.getItem('products'));
 }
@@ -15,7 +17,14 @@ function addproduct() {
         price: producPriceInput.value,
         description: productDescriptioneInput.value,
     };
-    productcontainer.push(productobj);
+
+    if (currentIndex === null) {
+        productcontainer.push(productobj); 
+    } else {
+        productcontainer[currentIndex] = productobj;
+        currentIndex = null; 
+    }
+
     display();
     localStorage.setItem('products', JSON.stringify(productcontainer));
     clearInput();
@@ -31,15 +40,22 @@ function display() {
 <td>${productcontainer[i].category}</td>
 <td>${productcontainer[i].price}</td>
 <td>${productcontainer[i].description}</td>
-<td><button onclick="deleteitem(${i})"  class="btn btn-danger btn-sm">Delete</button></td>
-<td><button class="btn btn-success btn-sm">Update</button></td>
+<td><button onclick="deleteitem(${i})" class="btn btn-danger btn-sm">Delete</button></td>
+<td><button onclick="edititem(${i})" class="btn btn-success btn-sm">Update</button></td>
 </tr>
 `;
     }
     document.getElementById('tbody').innerHTML = cartona;
 }
 
-display();
+function edititem(index) {
+    currentIndex = index; 
+    var product = productcontainer[index];
+    productNameInput.value = product.name;
+    productCategotyInput.value = product.category;
+    producPriceInput.value = product.price;
+    productDescriptioneInput.value = product.description;
+}
 
 function clearInput() {
     productNameInput.value = "";
@@ -60,7 +76,6 @@ function search() {
 
     for (var i = 0; i < productcontainer.length; i++) {
         if (productcontainer[i].name.toLowerCase().includes(searchInput)) {
-
             var highlightedName = productcontainer[i].name.replace(
                 new RegExp(searchInput, 'gi'),
                 (match) => `<span class="highlight">${match}</span>`
@@ -73,9 +88,11 @@ function search() {
 <td>${productcontainer[i].price}</td>
 <td>${productcontainer[i].description}</td>
 <td><button onclick="deleteitem(${i})" class="btn btn-danger btn-sm">Delete</button></td>
-<td><button class="btn btn-success btn-sm">Update</button></td>
+<td><button onclick="edititem(${i})" class="btn btn-success btn-sm">Update</button></td>
 </tr>`;
         }
     }
     document.getElementById('tbody').innerHTML = searchResult;
 }
+
+display();
